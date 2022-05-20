@@ -1,6 +1,5 @@
 from ast import operator
 import random
-from turtle import right
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from nerdle_gui import Ui_MainWindow
 
@@ -151,6 +150,18 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
     def big_border(self):
         self.labels[self.row][self.col].setStyleSheet("border: 3px solid black")
+
+    def keyPressEvent(self, event):
+        operator_list = ["+", "-", "*", "/", "="]
+        if "0" <= event.text() <= "9":
+            self.wirte_num_2_label(event.text())
+        elif event.text() in operator_list:
+            print(event.text())
+            self.wirte_num_2_label(event.text())
+        elif event.text() == "\b":
+            self.deltete_button()
+        
+            
 
 app = QApplication()
 win = MyWindow()
