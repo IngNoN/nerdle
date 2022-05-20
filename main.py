@@ -1,4 +1,6 @@
-from cgitb import small
+from ast import operator
+import random
+from turtle import right
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from nerdle_gui import Ui_MainWindow
 
@@ -18,10 +20,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         
         self.row = 0
         self.col = 0
-        self.result = "11+11=22"
+        self.results = ["24+54=78", "184/4=46", "4*39=156", "57-12=45", "8*15=120", "65-17=48"]
+        print(len(self.results))
+        self.result =  "32+12=44" #self.results[random.randint(0, len(self.results))]
         self.input_str = ""
         self.game_state = "running"
-
         self.big_border()
 
 
@@ -71,6 +74,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             self.check_input_right_numbers()
             if self.input_str == self.result:
                 self.game_state = "finished"
+                dialog = QMessageBox(self)
+                dialog.setWindowTitle("Congratiulation!")
+                dialog.setText("You guessed the right equation!")
+                dialog.exec()
                 return False # If this is the right string the game should stop
             else:
                 if self.check_for_last_row():
@@ -94,18 +101,27 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
 
     def check_input_right_numbers(self):
-        num_amount_dict = Counter(self.result)
-
+        num_amount_res_dict = Counter(self.result)
+        right_nums = []
         j = 0
         for i in self.input_str:
-            if num_amount_dict[i] > 0:
-                self.labels[self.row][j].setStyleSheet("background-color: yellow")
-                num_amount_dict[i] -= 1
-            else:
-                self.labels[self.row][j].setStyleSheet("background-color: red")
+            if self.input_str[j] == self.result[j]:
+                self.labels[self.row][j].setStyleSheet("background-color: green")
+                num_amount_res_dict[i] -= 1
+                right_nums.append(j)
             j += 1
+        j = 0
+        for i in self.input_str:
+            if num_amount_res_dict[i] > 0 and j not in right_nums:
+                self.labels[self.row][j].setStyleSheet("background-color: yellow")
+                num_amount_res_dict[i] -= 1
+                right_nums.append(j)
+            j += 1
+        for i in range(8):
+            if i not in right_nums:
+                self.labels[self.row][i].setStyleSheet("background-color: red")
 
-        self.check_input_right_position(self.input_str)
+        #self.check_input_right_position(self.input_str)
 
     def check_input_right_position(self, right_numbers):
         for i in range(len(self.labels[self.row])):
@@ -136,8 +152,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def big_border(self):
         self.labels[self.row][self.col].setStyleSheet("border: 3px solid black")
 
-
-        
 app = QApplication()
 win = MyWindow()
 
