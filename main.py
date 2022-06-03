@@ -1,7 +1,6 @@
-from ast import operator
-import random
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from nerdle_gui import Ui_MainWindow
+import random
 
 from collections import Counter
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -20,8 +19,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.row = 0
         self.col = 0
         self.results = ["24+54=78", "184/4=46", "4*39=156", "57-12=45", "8*15=120", "65-17=48"]
-        print(len(self.results))
-        self.result =  "32+12=44" #self.results[random.randint(0, len(self.results))]
+        self.result = self.results[random.randint(0, len(self.results))]
         self.input_str = ""
         self.game_state = "running"
         self.big_border()
@@ -156,7 +154,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         if "0" <= event.text() <= "9":
             self.wirte_num_2_label(event.text())
         elif event.text() in operator_list:
-            print(event.text())
             self.wirte_num_2_label(event.text())
         elif event.text() == "\b":
             self.deltete_button()
