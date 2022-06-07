@@ -15,11 +15,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                        [self.label51, self.label52, self.label53, self.label54, self.label55, self.label56, self.label57, self.label58],
                        [self.label61, self.label62, self.label63, self.label64, self.label65, self.label66, self.label67, self.label68]]
 
-        
         self.row = 0
         self.col = 0
         self.results = ["24+54=78", "184/4=46", "4*39=156", "57-12=45", "8*15=120", "65-17=48"]
-        self.result = self.results[random.randint(0, len(self.results))]
+        self.result = self.generate_equation() #self.results[random.randint(0, len(self.results) - 1)]
         self.input_str = ""
         self.game_state = "running"
         self.big_border()
@@ -158,7 +157,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         elif event.text() == "\b":
             self.deltete_button()
         
-            
+    def generate_equation(self):
+        first_number = random.randint(9, 90)
+        second_number = random.randint(9, 100 - first_number)
+        print(first_number, second_number, first_number + second_number)
 
 app = QApplication()
 win = MyWindow()
